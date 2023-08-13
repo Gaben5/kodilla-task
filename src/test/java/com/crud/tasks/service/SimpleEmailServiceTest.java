@@ -37,7 +37,7 @@ class SimpleEmailServiceTest {
             mailMessage.setCc(mail.getToCc().get());
         }
         //When
-        simpleEmailService.send(mail);
+        simpleEmailService.sendBasic(mail);
         //Then
         verify(javaMailSender, times(1)).send(mailMessage);
 

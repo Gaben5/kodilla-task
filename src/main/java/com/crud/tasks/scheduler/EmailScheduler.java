@@ -17,10 +17,10 @@ public class EmailScheduler {
     private static final String SUBJECT = "Tasks: Once a day email";
 
 
-    @Scheduled(cron = "0 0 10 * * *")
+    @Scheduled(cron = "0 0 13 * * *")
     public void sendInformationEmail(){
         long size = taskRepository.count();
-        simpleEmailService.send(
+        simpleEmailService.scheduleSend(
                 Mail.builder()
                         .mailTo(adminConfig.getAdminMail())
                         .subject(SUBJECT)

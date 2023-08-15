@@ -46,6 +46,15 @@ public class SimpleEmailService {
         };
     }
 
+    private MimeMessagePreparator createScheduledMimeMessage(final Mail mail){
+        return mimeMessage -> {
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
+            messageHelper.setTo(mail.getMailTo());
+            messageHelper.setSubject(mail.getSubject());
+            messageHelper.setText(mailCreatorService.buildScheduledTreloCardEmail(mail.getMessage()), true);
+        };
+    }
+
     public void sendBasic(final Mail mail){
         log.info("Starting email preparation..");
         try {
@@ -53,6 +62,16 @@ public class SimpleEmailService {
             log.info("Email has been sent");
         }catch (MailException e){
             log.error("failed to process email sending: " + e.getMessage(), e);
+        }
+    }
+
+    public void scheduleSend(final Mail mail){
+        log.info("Starting Email preparation...");
+        try {
+            javaMailSender.send(createScheduledMimeMessage(mail));
+            log.info("Email has been sent.");
+        }catch (MailException e){
+            log.error("Failed to process email sending: " + e.getMessage(), e);
         }
     }
 }
